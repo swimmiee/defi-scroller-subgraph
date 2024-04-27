@@ -37,3 +37,21 @@ yarn deploy -- network=linea protocol=syncswap env=local
 
 **Supported Networks**
 [The graph supported networks](https://thegraph.com/docs/en/developing/supported-networks/)
+
+
+## Deployed Subgraphs
+
+Uniswap V3
+```
+https://api.studio.thegraph.com/query/73090/test-uniswap-v3-scroll/v0.1.1
+```
+
+SyncSwap
+```
+https://api.studio.thegraph.com/query/73090/test-syncswap-scroll/v0.1.1
+```
+
+Ambient
+```
+https://api.studio.thegraph.com/query/73090/test-ambient-scroll/v0.1.0
+```
