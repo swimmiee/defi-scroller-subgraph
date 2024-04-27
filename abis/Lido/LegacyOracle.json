@@ -1,0 +1,12 @@
+[
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": false, "name": "epochId", "type": "uint256" },
+      { "indexed": false, "name": "beaconBalance", "type": "uint128" },
+      { "indexed": false, "name": "beaconValidators", "type": "uint128" }
+    ],
+    "name": "Completed",
+    "type": "event"
+  }
+]

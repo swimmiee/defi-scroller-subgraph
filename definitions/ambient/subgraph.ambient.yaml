@@ -1,0 +1,48 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Ambient
+    network: {{network}}
+    source:
+      address: "{{Dex}}"
+      abi: AmbientDex
+      startBlock: {{startBlock}}
+    context:
+      ambientQuery:
+        type: String
+        data: "{{Query}}"
+      snapshotBatch:
+        type: Int
+        data: {{snapshotBatch}} 
+      startSnapshotBlock:
+        type: Int
+        data: {{startSnapshotBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - CrocWarmCmd
+        - CrocColdCmd
+      abis:
+        - name: AmbientDex
+          file: ./abis/Ambient/AmbientDex.json
+        - name: AmbientQuery
+          file: ./abis/Ambient/AmbientQuery.json
+      eventHandlers:
+        - event: CrocWarmCmd(bytes,int128,int128)
+          handler: handleWarmCmd
+        - event: CrocColdCmd(bytes)
+          handler: handleColdCmd
+      file: ./src/projects/ambient/index.ts
+      blockHandlers:
+        - handler: handleBlock
+          filter:
+            kind: polling
+            every: {{polling}}
+    
+  

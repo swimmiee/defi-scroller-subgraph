@@ -1,0 +1,6 @@
+node_modules
+generated
+build
+subgraph.yaml
+.env.local
+**/*/.DS_Store

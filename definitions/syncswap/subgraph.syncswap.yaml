@@ -1,0 +1,100 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: SyncSwapClassic
+    network: {{network}}
+    source:
+      address: "{{classicFactory}}"
+      abi: SyncSwapFactory
+    context:
+      router:
+        type: String
+        data: "{{router}}"
+      snapshotBatch:
+        type: Int
+        data: {{snapshotBatch}} # 12 hours
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/projects/syncswap/factory.ts
+      entities:
+        - PoolCreated
+      abis:
+        - name: SyncSwapFactory
+          file: ./abis/SyncSwap/SyncSwapFactory.json
+        - name: SyncSwapPool
+          file: ./abis/SyncSwap/SyncSwapPool.json
+      eventHandlers:
+        - event: PoolCreated(indexed address,indexed address,address)
+          handler: handlePoolCreated
+  - kind: ethereum
+    name: SyncSwapStable
+    network: {{network}}
+    source:
+      address: "{{stableFactory}}"
+      abi: SyncSwapFactory
+    context:
+      router:
+        type: String
+        data: "{{router}}"
+      snapshotBatch:
+        type: Int
+        data: {{snapshotBatch}} # 12 hours
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/projects/syncswap/factory.ts
+      entities:
+        - PoolCreated
+      abis:
+        - name: SyncSwapFactory
+          file: ./abis/SyncSwap/SyncSwapFactory.json
+        - name: SyncSwapPool
+          file: ./abis/SyncSwap/SyncSwapPool.json
+      eventHandlers:
+        - event: PoolCreated(indexed address,indexed address,address)
+          handler: handlePoolCreated
+      blockHandlers:      
+        - handler: handleOnce
+          filter:
+            kind: once
+templates:
+  - kind: ethereum/contract
+    name: SyncSwapPool
+    network: {{network}}
+    source:
+      abi: SyncSwapPool
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/projects/syncswap/index.ts
+      entities:
+        - Transfer
+        - Mint
+        - Burn
+        - Sync
+      abis:
+        - name: SyncSwapPool
+          file: ./abis/SyncSwap/SyncSwapPool.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+          receipt: true
+        - event: Mint(indexed address,uint256,uint256,uint256,indexed address)
+          handler: handleMint
+        - event: Burn(indexed address,uint256,uint256,uint256,indexed address)
+          handler: handleBurn
+        - event: Sync(uint256,uint256)
+          handler: handleSync
+      blockHandlers:
+        - handler: handleBlock
+          filter:
+            kind: polling
+            every: {{polling}} # 12 hours

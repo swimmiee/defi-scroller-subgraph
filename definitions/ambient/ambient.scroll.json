@@ -1,0 +1,9 @@
+{
+  "network": "scroll",
+  "Dex": "0xaaaaAAAACB71BF2C8CaE522EA5fa455571A74106",
+  "Query": "0x62223e90605845Cf5CC6DAE6E0de4CDA130d6DDf",
+  "polling": 144,
+  "snapshotBatch": 100,
+  "startBlock": 267408,
+  "startSnapshotBlock": 4861919
+}

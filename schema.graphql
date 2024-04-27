@@ -1,0 +1,93 @@
+type Position @entity {
+  id: Bytes! # {chain}:{investmentId}:{owner}:{tag}
+  owner: Bytes! # address
+  tag: String! # tag
+  type: PositionType!
+  initAmounts: [BigInt!]! # [...inputAmounts, ...rewardAmounts] : initiated when first generated or re-generated
+  amounts: [BigInt!]! # [...inputAmounts, ...rewardAmounts] : current amounts
+  meta: [String!]! # [meta1, meta2, ...] : additional information
+  liquidity: BigInt! # UniswapV3 -> liquidity, SyncSwap -> balanceOf, ... if none, 0
+  closed: Boolean
+  # relations
+  investment: Investment!
+  snapshots: [PositionSnapshot!]! @derivedFrom(field: "position")
+  changes: [PositionChange!]! @derivedFrom(field: "position")
+}
+
+type PositionSnapshot @entity(immutable: true) {
+  id: Bytes!
+  amounts: [BigInt!]! # [...inputAmounts, ...rewardAmounts]
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+
+  # relationships
+  position: Position!
+}
+
+type PositionChange @entity(immutable: true) {
+  id: Bytes!
+  action: PositionChangeAction!
+  dAmounts: [BigInt!]!
+  afterAmounts: [BigInt!]!
+
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+  # relationships
+  position: Position!
+}
+
+type Protocol @entity {
+  id: Bytes!
+  chain: String!
+  name: String!
+  blockNumber: BigInt!
+  meta: [String!]!
+  _batchIterator: BigInt!
+  # relationships
+  investments: [Investment!]! @derivedFrom(field: "protocol")
+}
+
+type Investment @entity {
+  id: Bytes!
+  address: Bytes!
+  tag: String!
+  inputTokens: [Bytes!]!
+  rewardTokens: [Bytes!]!
+  meta: [String!]!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+
+  # relationships
+  protocol: Protocol!
+  positions: [Position!]! @derivedFrom(field: "investment")
+  holders: [Holder!]! @derivedFrom(field: "investment")
+}
+
+type Holder @entity {
+  id: Bytes!
+  address: Bytes!
+  createdAt: BigInt!
+  createdAtBlock: BigInt!
+  # relationships
+  investment: Investment!
+}
+
+enum PositionChangeAction {
+  Deposit
+  Withdraw
+  Harvest
+  Borrow
+  Repay
+  Liquidate
+  Send
+  Receive
+  Stake
+  Unstake
+  Compound
+}
+
+enum PositionType {
+  Invest
+  Borrow
+}
