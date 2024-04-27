@@ -25,7 +25,7 @@ export class UniswapV3Helper extends InvestmentHelper {
   }
 
   constructor(readonly investmentAddress: Address) {
-    super(UNISWAP_V3_PROTOCOL, investmentAddress);
+    super(UNISWAP_V3_PROTOCOL, investmentAddress, "");
   }
   getProtocolMeta(): string[] {
     const totalSupply = UniswapV3PositionManager.bind(

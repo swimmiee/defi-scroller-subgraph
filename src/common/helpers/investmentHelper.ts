@@ -43,7 +43,6 @@ export abstract class InvestmentHelper {
     readonly protocolName: string,
     readonly investmentAddress: Address,
     readonly tag: string,
-    readonly _id: Bytes = Bytes.fromHexString("")
   ) {
     // create investment base id with protocol name and investment address, base id: {protocolName}{investmentAddress}:{tag}
     this.id = getInvestmentId(protocolName, investmentAddress, tag);

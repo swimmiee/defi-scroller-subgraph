@@ -18,7 +18,7 @@ export const SYNCSWAP_PROTOCOL = "SyncSwap";
 
 export class SyncSwapHelper extends InvestmentHelper {
   constructor(investmentAddress: Address) {
-    super(SYNCSWAP_PROTOCOL, investmentAddress);
+    super(SYNCSWAP_PROTOCOL, investmentAddress, "");
   }
   getProtocolMeta(): string[] {
     return [];
@@ -29,7 +29,9 @@ export class SyncSwapHelper extends InvestmentHelper {
     if (!investment) {
       const protocol = this.getProtocol(block);
       const info = this.getInfo(this.investmentAddress);
+
       investment = new Investment(this.id);
+      investment.tag = "";
       investment.protocol = protocol.id;
       investment.address = this.investmentAddress;
       investment.inputTokens = info.inputTokens.map<Bytes>((addr) =>

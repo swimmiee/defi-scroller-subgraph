@@ -9,9 +9,10 @@ export function handlePoolCreated(event: PoolCreated): void {
   const helper = new UniswapV3Helper(event.params.pool);
   const protocol = helper.getProtocol(event.block);
 
-  const investmentId = getInvestmentId(UNISWAP_V3_PROTOCOL, event.params.pool);
+  const investmentId = getInvestmentId(UNISWAP_V3_PROTOCOL, event.params.pool, "");
   const i = new Investment(investmentId);
 
+  i.tag = "";
   i.protocol = protocol.id;
   i.address = event.params.pool;
   i.inputTokens = [event.params.token0, event.params.token1];

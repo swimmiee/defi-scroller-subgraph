@@ -1,8 +1,0 @@
-{
-  "network": "scroll",
-  "classicFactory": "0x37BAc764494c8db4e54BDE72f6965beA9fa0AC2d",
-  "stableFactory": "0xE4CF807E351b56720B17A59094179e7Ed9dD3727",
-  "router": "0x80e38291e06339d10AAB483C65695D004dBD5C69",
-  "snapshotBatch": 5,
-  "polling": 2880
-}

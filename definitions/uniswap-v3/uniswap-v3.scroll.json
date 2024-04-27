@@ -1,0 +1,9 @@
+{
+    "network": "scroll",
+    "positionManager": "0xB39002E4033b162fAc607fc3471E205FA2aE5967",
+    "factory": "0x70c62c8b8e801124a4aa81ce07b637a3e83cb919",
+    "snapshotBatch": 40,
+    "polling": 360,
+    "startBlock": 1375
+  }
+  
